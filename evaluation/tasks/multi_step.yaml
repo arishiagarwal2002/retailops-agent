@@ -1,0 +1,137 @@
+# 15 multi-step tasks. Success = gold values mentioned AND expected tools called in order
+# (as a subsequence) AND no forbidden tools. "fc.<field>" refers to the gold forecast call.
+- id: multi_001
+  question: Using a 4-week demand forecast, will current stock of 85123A cover demand?
+  gold_sql: SELECT on_hand FROM stock_levels WHERE stock_code = '85123A'
+  gold_forecast: {stock_code: 85123A, weeks: 4}
+  mention: [r0.on_hand, fc.total_p50]
+  expected_tools: [run_sql, forecast_demand]
+  unordered_tools: true  # stock and forecast are independent lookups; either order is correct
+
+- id: multi_002
+  question: Using a 4-week demand forecast, will current stock of 84879 cover demand?
+  gold_sql: SELECT on_hand FROM stock_levels WHERE stock_code = '84879'
+  gold_forecast: {stock_code: 84879, weeks: 4}
+  mention: [r0.on_hand, fc.total_p50]
+  expected_tools: [run_sql, forecast_demand]
+  unordered_tools: true  # stock and forecast are independent lookups; either order is correct
+
+- id: multi_003
+  question: Using a 4-week demand forecast, will current stock of 23084 cover demand?
+  gold_sql: SELECT on_hand FROM stock_levels WHERE stock_code = '23084'
+  gold_forecast: {stock_code: '23084', weeks: 4}
+  mention: [r0.on_hand, fc.total_p50]
+  expected_tools: [run_sql, forecast_demand]
+  unordered_tools: true  # stock and forecast are independent lookups; either order is correct
+
+- id: multi_004
+  question: Using a 4-week demand forecast, will current stock of 22086 cover demand?
+  gold_sql: SELECT on_hand FROM stock_levels WHERE stock_code = '22086'
+  gold_forecast: {stock_code: '22086', weeks: 4}
+  mention: [r0.on_hand, fc.total_p50]
+  expected_tools: [run_sql, forecast_demand]
+  unordered_tools: true  # stock and forecast are independent lookups; either order is correct
+
+- id: multi_005
+  question: Using a 4-week demand forecast, will current stock of 22423 cover demand?
+  gold_sql: SELECT on_hand FROM stock_levels WHERE stock_code = '22423'
+  gold_forecast: {stock_code: '22423', weeks: 4}
+  mention: [r0.on_hand, fc.total_p50]
+  expected_tools: [run_sql, forecast_demand]
+  unordered_tools: true  # stock and forecast are independent lookups; either order is correct
+
+- id: multi_006
+  question: Will I run out of product 85123A before Christmas?
+  gold_sql: SELECT on_hand FROM stock_levels WHERE stock_code = '85123A'
+  mention: [r0.on_hand]
+  expected_tools: [run_sql, forecast_demand]
+  unordered_tools: true  # stock and forecast are independent lookups; either order is correct
+
+- id: multi_007
+  question: >-
+    What is next week's forecast for 23084 (point forecast and 80% interval), and how does it
+    compare with its average weekly sales over the last 8 weeks?
+  gold_forecast: {stock_code: '23084', weeks: 1}
+  mention: [fc.weeks.0.p50, fc.weeks.0.p10, fc.weeks.0.p90]
+  expected_tools: [forecast_demand]
+
+- id: multi_008
+  question: Give me the demand forecast for 22197 for the next 2 weeks with the 80% interval.
+  gold_forecast: {stock_code: '22197', weeks: 2}
+  mention: [fc.weeks.0.p50, fc.weeks.1.p50]
+  expected_tools: [forecast_demand]
+
+- id: multi_009
+  question: Forecast demand for product 23581 over the next 4 weeks.
+  # Must say WHY it will not forecast: an insufficiency word near "history"/"data"/"weeks".
+  mention_regex: '(?i)\b(insufficient|not enough|too (?:little|few|short)|fewer|limited|longer|more|only|below|minimum|lacks?|short)\b[^.]{0,60}\b(history|data|weeks?)\b'
+  expected_tools: [forecast_demand]
+  no_forecast_numbers: true
+
+- id: multi_010
+  question: >-
+    Which 5 products had the largest drop in units sold last quarter compared with the quarter before?
+    Give stock codes.
+  gold_sql: >-
+    WITH q AS (
+      SELECT stock_code,
+        SUM(CASE WHEN invoice_date >= '2011-04-01' AND invoice_date < '2011-07-01' THEN quantity ELSE 0 END) AS q2,
+        SUM(CASE WHEN invoice_date >= '2011-07-01' AND invoice_date < '2011-10-01' THEN quantity ELSE 0 END) AS q3
+      FROM transactions WHERE NOT is_cancellation GROUP BY stock_code)
+    SELECT stock_code, q2 - q3 AS drop FROM q ORDER BY drop DESC LIMIT 5
+  mention: [all.stock_code]
+  expected_tools: [run_sql]
+
+- id: multi_011
+  question: >-
+    Excluding 'Other', which product category earned the most revenue in 2011, and what was the
+    best-selling product by units within it?
+  gold_sql:
+    - >-
+      SELECT p.category, ROUND(SUM(t.quantity*t.unit_price)::numeric,2) AS revenue FROM transactions t
+      JOIN products p USING (stock_code) WHERE NOT t.is_cancellation AND p.category <> 'Other'
+        AND t.invoice_date >= '2011-01-01' AND t.invoice_date < '2012-01-01'
+      GROUP BY 1 ORDER BY revenue DESC LIMIT 1
+    - >-
+      SELECT t.stock_code, SUM(t.quantity) AS units FROM transactions t JOIN products p USING (stock_code)
+      WHERE NOT t.is_cancellation AND p.category = 'Home Decor'
+        AND t.invoice_date >= '2011-01-01' AND t.invoice_date < '2012-01-01'
+      GROUP BY 1 ORDER BY units DESC LIMIT 1
+  mention: [q0.r0.category, q1.r0.stock_code]
+  expected_tools: [run_sql]
+
+- id: multi_012
+  question: Who was our top customer by revenue in 2011, and how many orders did they place that year?
+  gold_sql: >-
+    SELECT customer_id, COUNT(DISTINCT invoice_no) AS orders FROM transactions
+    WHERE NOT is_cancellation AND customer_id IS NOT NULL
+      AND invoice_date >= '2011-01-01' AND invoice_date < '2012-01-01'
+    GROUP BY customer_id ORDER BY SUM(quantity*unit_price) DESC LIMIT 1
+  mention: [r0.customer_id, r0.orders]
+  expected_tools: [run_sql]
+
+- id: multi_013
+  question: >-
+    Is 23084 at or below its reorder point? If it is, draft a reorder sized from a 4-week forecast
+    following our supplier terms.
+  gold_sql: SELECT on_hand, reorder_point FROM stock_levels WHERE stock_code = '23084'
+  mention: [r0.on_hand, r0.reorder_point]
+  expected_tools: [run_sql, forecast_demand, draft_reorder]
+  expect_pending_action: true
+
+- id: multi_014
+  question: >-
+    Is 21212 at or below its reorder point? If it is, draft a reorder sized from a 4-week forecast
+    following our supplier terms.
+  gold_sql: SELECT on_hand, reorder_point FROM stock_levels WHERE stock_code = '21212'
+  mention: [r0.on_hand, r0.reorder_point]
+  expected_tools: [run_sql]
+  forbidden_tools: [draft_reorder]
+
+- id: multi_015
+  question: How many weeks of cover does 85099B have, based on its median forecast for the next 4 weeks?
+  gold_sql: SELECT on_hand FROM stock_levels WHERE stock_code = '85099B'
+  gold_forecast: {stock_code: 85099B, weeks: 4}
+  mention: [r0.on_hand]
+  expected_tools: [run_sql, forecast_demand]
+  unordered_tools: true  # stock and forecast are independent lookups; either order is correct

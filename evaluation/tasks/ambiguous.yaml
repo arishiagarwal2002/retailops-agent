@@ -1,0 +1,21 @@
+# 10 ambiguous requests. Success = the agent asks for clarification instead of guessing.
+- id: amb_001
+  question: What were my best products last year?
+- id: amb_002
+  question: Show me the top customers.
+- id: amb_003
+  question: How are sales doing?
+- id: amb_004
+  question: Which products are performing badly?
+- id: amb_005
+  question: Compare this period with the last one.
+- id: amb_006
+  question: Which country is our biggest market?
+- id: amb_007
+  question: Reorder the popular items.
+- id: amb_008
+  question: How much did we sell?
+- id: amb_009
+  question: Who are our most valuable customers?
+- id: amb_010
+  question: Which items should I discount?

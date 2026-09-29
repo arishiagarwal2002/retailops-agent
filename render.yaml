@@ -1,0 +1,34 @@
+# Render blueprint: API (Docker) + Streamlit UI. Postgres+pgvector comes from Neon or Supabase
+# (set DATABASE_URL / DATABASE_URL_RO in the dashboard). See docs/deploy.md.
+services:
+  - type: web
+    name: retailops-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /health
+    preDeployCommand: sh scripts/bootstrap.sh
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_URL_RO
+        sync: false
+      - key: LLM_PROVIDER
+        value: gemini
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: DAILY_SPEND_CAP_GBP
+        value: "1.0"
+      - key: RATE_LIMIT
+        value: 10/minute
+  - type: web
+    name: retailops-ui
+    runtime: docker
+    dockerfilePath: ./ui/Dockerfile
+    plan: free
+    envVars:
+      - key: API_URL
+        fromService:
+          type: web
+          name: retailops-api
+          envVarKey: RENDER_EXTERNAL_URL

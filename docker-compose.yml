@@ -1,0 +1,43 @@
+# docker compose up --build
+# Postgres+pgvector, a one-off init job (migrate, RO role, load data, ingest policy), the API and the UI.
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: retailops
+      POSTGRES_PASSWORD: retailops
+      POSTGRES_DB: retailops
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U retailops"]
+      interval: 3s
+      retries: 20
+
+  init:
+    build: .
+    env_file: [.env]
+    environment: &dbenv
+      DATABASE_URL: postgresql+psycopg://retailops:retailops@db:5432/retailops
+      DATABASE_URL_RO: postgresql+psycopg://retailops_ro:retailops_ro@db:5432/retailops
+    command: sh scripts/bootstrap.sh
+    depends_on:
+      db: { condition: service_healthy }
+
+  api:
+    build: .
+    env_file: [.env]
+    environment: *dbenv
+    ports: ["8000:8000"]
+    depends_on:
+      init: { condition: service_completed_successfully }
+
+  ui:
+    build: { context: ., dockerfile: ui/Dockerfile }
+    environment:
+      API_URL: http://api:8000
+    ports: ["8501:8501"]
+    depends_on: [api]
+
+volumes:
+  pgdata:

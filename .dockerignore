@@ -1,0 +1,7 @@
+.venv
+.git
+.pgdata
+data/raw
+**/__pycache__
+.env
+evaluation/results/*/runs.jsonl

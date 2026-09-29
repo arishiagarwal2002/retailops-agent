@@ -1,0 +1,153 @@
+{
+  "config": "agent",
+  "model": "openai/gpt-oss-120b",
+  "runs": 1,
+  "n_tasks": 10,
+  "smoke": true,
+  "prompt_version": "agent-v1.0",
+  "timestamp": "20260928-163100",
+  "metrics": {
+    "n_tasks": {
+      "mean": 10,
+      "std": 0.0
+    },
+    "task_success": {
+      "mean": 0.9,
+      "std": 0.0
+    },
+    "success_by_category": {
+      "sql_single": {
+        "mean": 1.0,
+        "std": 0.0
+      },
+      "multi_step": {
+        "mean": 0.5,
+        "std": 0.0
+      },
+      "policy": {
+        "mean": 1.0,
+        "std": 0.0
+      },
+      "ambiguous": {
+        "mean": 1.0,
+        "std": 0.0
+      },
+      "adversarial": {
+        "mean": 1.0,
+        "std": 0.0
+      }
+    },
+    "tool_selection_accuracy": {
+      "mean": 0.9,
+      "std": 0.0
+    },
+    "argument_validity_rate": {
+      "mean": 0.8636363636363636,
+      "std": 0.0
+    },
+    "numeric_hallucination_rate": {
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "execution_match_sql": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "policy_recall_at_5": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "policy_citation_rate": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "latency_p50_ms": {
+      "mean": 23958.5,
+      "std": 0.0
+    },
+    "latency_p95_ms": {
+      "mean": 89524.69999999997,
+      "std": 0.0
+    },
+    "steps_mean": {
+      "mean": 3.4,
+      "std": 0.0
+    },
+    "cost_per_task_gbp": {
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "cost_by_category_gbp": {
+      "sql_single": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "multi_step": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "policy": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "ambiguous": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "adversarial": {
+        "mean": 0.0,
+        "std": 0.0
+      }
+    },
+    "tokens_in_mean": {
+      "mean": 7002.0,
+      "std": 0.0
+    },
+    "tokens_out_mean": {
+      "mean": 631.7,
+      "std": 0.0
+    },
+    "write_attempts": {
+      "mean": 0,
+      "std": 0.0
+    },
+    "write_attempts_blocked_rate": {
+      "mean": null,
+      "std": null
+    }
+  },
+  "per_run": [
+    {
+      "n_tasks": 10,
+      "task_success": 0.9,
+      "success_by_category": {
+        "sql_single": 1.0,
+        "multi_step": 0.5,
+        "policy": 1.0,
+        "ambiguous": 1.0,
+        "adversarial": 1.0
+      },
+      "tool_selection_accuracy": 0.9,
+      "argument_validity_rate": 0.8636363636363636,
+      "numeric_hallucination_rate": 0.0,
+      "execution_match_sql": 1.0,
+      "policy_recall_at_5": 1.0,
+      "policy_citation_rate": 1.0,
+      "latency_p50_ms": 23958.5,
+      "latency_p95_ms": 89524.69999999997,
+      "steps_mean": 3.4,
+      "cost_per_task_gbp": 0.0,
+      "cost_by_category_gbp": {
+        "sql_single": 0.0,
+        "multi_step": 0.0,
+        "policy": 0.0,
+        "ambiguous": 0.0,
+        "adversarial": 0.0
+      },
+      "tokens_in_mean": 7002.0,
+      "tokens_out_mean": 631.7,
+      "write_attempts": 0,
+      "write_attempts_blocked_rate": null
+    }
+  ]
+}

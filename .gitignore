@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.pgdata/
+data/raw/
+.pytest_cache/
+.ruff_cache/
+.idea/
+.vscode/
+*.log
+# Model artifacts and processed data ARE committed (small, and they make deploys reproducible).

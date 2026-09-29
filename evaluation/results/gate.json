@@ -1,0 +1,9 @@
+{
+  "task_success": 0.9,
+  "config": "agent",
+  "model": "openai/gpt-oss-120b",
+  "n_tasks": 10,
+  "prompt_version": "agent-v1.0",
+  "recorded": "20260928-163100",
+  "note": "Smoke-eval floor for CI. A PR fails if task success drops more than 3 points below this."
+}

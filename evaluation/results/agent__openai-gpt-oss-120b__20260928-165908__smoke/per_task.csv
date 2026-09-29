@@ -1,0 +1,2 @@
+run,task_id,category,success,status,tool_selection_ok,mentions_ok,execution_match,verdict,citation_present,recall_at_5,numbers_checked,numbers_ungrounded,ungrounded_examples,tool_calls,tool_calls_valid,write_attempts,write_attempts_blocked,forbidden_tool_called,latency_ms,steps,tokens_in,tokens_out,cost_gbp,tools,citations,run_id,answer
+0,sql_001,sql_single,False,error,True,False,False,,,,0,0,[],0,0,0,0,,492002,0,0,0,0.0,[],[],0b3ac89b-433d-4a8e-8898-fb820d6c6f9b,The run failed: APIConnectionError: Connection error.

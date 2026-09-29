@@ -1,0 +1,375 @@
+{
+  "summary": {
+    "n_queries": 15,
+    "recall_at_5_dense": 0.8,
+    "recall_at_5_rerank": 0.7333333333333333,
+    "hit_at_1_dense": 0.7333333333333333,
+    "hit_at_1_rerank": 0.8
+  },
+  "rows": [
+    {
+      "task_id": "pol_001",
+      "expected": [
+        "Returns Policy §2.1"
+      ],
+      "dense_top5": [
+        "Returns Policy §2.1",
+        "UK Consumer Rights Summary §2.2",
+        "Returns Policy §6.1",
+        "Returns Policy §4.2",
+        "Returns Policy §1.2"
+      ],
+      "rerank_top5": [
+        "Returns Policy §2.1",
+        "Returns Policy §4.2",
+        "Returns Policy §6.1",
+        "Returns Policy §4.1",
+        "Returns Policy §7.1"
+      ],
+      "recall_dense": 1.0,
+      "recall_rerank": 1.0,
+      "hit1_dense": true,
+      "hit1_rerank": true
+    },
+    {
+      "task_id": "pol_002",
+      "expected": [
+        "Returns Policy §2.2"
+      ],
+      "dense_top5": [
+        "Returns Policy §2.2",
+        "Returns Policy §7.1",
+        "Supplier Terms §2.5",
+        "UK Consumer Rights Summary §4.2",
+        "Returns Policy §1.3"
+      ],
+      "rerank_top5": [
+        "Returns Policy §2.2",
+        "Returns Policy §7.1",
+        "Supplier Terms §2.5",
+        "Returns Policy §2.1",
+        "UK Consumer Rights Summary §4.2"
+      ],
+      "recall_dense": 1.0,
+      "recall_rerank": 1.0,
+      "hit1_dense": true,
+      "hit1_rerank": true
+    },
+    {
+      "task_id": "pol_003",
+      "expected": [
+        "Returns Policy §5.1"
+      ],
+      "dense_top5": [
+        "Returns Policy §5.1",
+        "Returns Policy §2.5",
+        "Returns Policy §2.3",
+        "Returns Policy §1.2",
+        "Returns Policy §4.3"
+      ],
+      "rerank_top5": [
+        "Returns Policy §5.1",
+        "Returns Policy §2.3",
+        "Returns Policy §7.1",
+        "Returns Policy §2.5",
+        "Returns Policy §4.1"
+      ],
+      "recall_dense": 1.0,
+      "recall_rerank": 1.0,
+      "hit1_dense": true,
+      "hit1_rerank": true
+    },
+    {
+      "task_id": "pol_004",
+      "expected": [
+        "Returns Policy §6.2"
+      ],
+      "dense_top5": [
+        "Returns Policy §6.2",
+        "Returns Policy §2.3",
+        "Supplier Terms §4.2",
+        "Returns Policy §7.1",
+        "Returns Policy §5.1"
+      ],
+      "rerank_top5": [
+        "Returns Policy §6.2",
+        "Returns Policy §2.3",
+        "Returns Policy §7.1",
+        "Supplier Terms §4.2",
+        "Returns Policy §5.1"
+      ],
+      "recall_dense": 1.0,
+      "recall_rerank": 1.0,
+      "hit1_dense": true,
+      "hit1_rerank": true
+    },
+    {
+      "task_id": "pol_005",
+      "expected": [
+        "Returns Policy §3.2"
+      ],
+      "dense_top5": [
+        "Returns Policy §3.2",
+        "UK Consumer Rights Summary §2.3",
+        "Returns Policy §4.2",
+        "UK Consumer Rights Summary §2.2",
+        "Returns Policy §2.1"
+      ],
+      "rerank_top5": [
+        "Returns Policy §3.2",
+        "Returns Policy §4.2",
+        "Returns Policy §2.1",
+        "UK Consumer Rights Summary §2.3",
+        "Returns Policy §4.1"
+      ],
+      "recall_dense": 1.0,
+      "recall_rerank": 1.0,
+      "hit1_dense": true,
+      "hit1_rerank": true
+    },
+    {
+      "task_id": "pol_006",
+      "expected": [
+        "Returns Policy §4.1",
+        "Returns Policy §4.2"
+      ],
+      "dense_top5": [
+        "Returns Policy §4.1",
+        "Returns Policy §4.3",
+        "Returns Policy §6.4",
+        "Supplier Terms §3.3",
+        "Supplier Terms §4.3"
+      ],
+      "rerank_top5": [
+        "Returns Policy §4.1",
+        "Returns Policy §4.3",
+        "Returns Policy §6.4",
+        "Supplier Terms §4.3",
+        "Supplier Terms §3.3"
+      ],
+      "recall_dense": 0.5,
+      "recall_rerank": 0.5,
+      "hit1_dense": true,
+      "hit1_rerank": true
+    },
+    {
+      "task_id": "pol_007",
+      "expected": [
+        "Returns Policy §7.2"
+      ],
+      "dense_top5": [
+        "Returns Policy §7.2",
+        "Returns Policy §7.1",
+        "Returns Policy §4.4",
+        "Returns Policy §2.5",
+        "Returns Policy §1.4"
+      ],
+      "rerank_top5": [
+        "Returns Policy §7.2",
+        "Returns Policy §7.1",
+        "Returns Policy §2.4",
+        "Returns Policy §2.5",
+        "Returns Policy §4.3"
+      ],
+      "recall_dense": 1.0,
+      "recall_rerank": 1.0,
+      "hit1_dense": true,
+      "hit1_rerank": true
+    },
+    {
+      "task_id": "pol_008",
+      "expected": [
+        "Supplier Terms §1.2"
+      ],
+      "dense_top5": [
+        "Supplier Terms §1.2",
+        "Supplier Terms §1.1",
+        "Returns Policy §1.2",
+        "Supplier Terms §2.4",
+        "Returns Policy §8.2"
+      ],
+      "rerank_top5": [
+        "Supplier Terms §1.2",
+        "Supplier Terms §1.1",
+        "Returns Policy §1.2",
+        "Supplier Terms §2.5",
+        "Supplier Terms §1.4"
+      ],
+      "recall_dense": 1.0,
+      "recall_rerank": 1.0,
+      "hit1_dense": true,
+      "hit1_rerank": true
+    },
+    {
+      "task_id": "pol_009",
+      "expected": [
+        "Supplier Terms §2.2"
+      ],
+      "dense_top5": [
+        "Supplier Terms §2.1",
+        "Supplier Terms §1.4",
+        "Supplier Terms §4.2",
+        "Supplier Terms §1.3",
+        "Supplier Terms §1.2"
+      ],
+      "rerank_top5": [
+        "Supplier Terms §2.1",
+        "Supplier Terms §2.3",
+        "Supplier Terms §1.2",
+        "Supplier Terms §1.4",
+        "Supplier Terms §1.3"
+      ],
+      "recall_dense": 0.0,
+      "recall_rerank": 0.0,
+      "hit1_dense": false,
+      "hit1_rerank": false
+    },
+    {
+      "task_id": "pol_010",
+      "expected": [
+        "Supplier Terms §4.2"
+      ],
+      "dense_top5": [
+        "Supplier Terms §4.2",
+        "Returns Policy §7.2",
+        "Supplier Terms §4.1",
+        "UK Consumer Rights Summary §2.2",
+        "Supplier Terms §2.1"
+      ],
+      "rerank_top5": [
+        "Supplier Terms §4.2",
+        "Supplier Terms §4.1",
+        "Supplier Terms §4.3",
+        "Supplier Terms §2.4",
+        "Supplier Terms §2.1"
+      ],
+      "recall_dense": 1.0,
+      "recall_rerank": 1.0,
+      "hit1_dense": true,
+      "hit1_rerank": true
+    },
+    {
+      "task_id": "pol_011",
+      "expected": [
+        "UK Consumer Rights Summary §2.1"
+      ],
+      "dense_top5": [
+        "UK Consumer Rights Summary §2.1",
+        "UK Consumer Rights Summary §2.6",
+        "UK Consumer Rights Summary §2.2",
+        "UK Consumer Rights Summary §1.2",
+        "UK Consumer Rights Summary §2.3"
+      ],
+      "rerank_top5": [
+        "UK Consumer Rights Summary §2.1",
+        "UK Consumer Rights Summary §2.2",
+        "UK Consumer Rights Summary §2.6",
+        "UK Consumer Rights Summary §2.3",
+        "UK Consumer Rights Summary §1.2"
+      ],
+      "recall_dense": 1.0,
+      "recall_rerank": 1.0,
+      "hit1_dense": true,
+      "hit1_rerank": true
+    },
+    {
+      "task_id": "pol_012",
+      "expected": [
+        "Returns Policy §2.1",
+        "Returns Policy §1.3"
+      ],
+      "dense_top5": [
+        "Returns Policy §5.2",
+        "Returns Policy §1.4",
+        "Returns Policy §1.3",
+        "Returns Policy §2.1",
+        "Returns Policy §8.1"
+      ],
+      "rerank_top5": [
+        "Returns Policy §2.1",
+        "Returns Policy §5.2",
+        "Returns Policy §2.3",
+        "Returns Policy §6.1",
+        "Supplier Terms §4.3"
+      ],
+      "recall_dense": 1.0,
+      "recall_rerank": 0.5,
+      "hit1_dense": false,
+      "hit1_rerank": true
+    },
+    {
+      "task_id": "pol_013",
+      "expected": [
+        "Returns Policy §2.2",
+        "Returns Policy §2.1"
+      ],
+      "dense_top5": [
+        "Returns Policy §2.3",
+        "Returns Policy §1.4",
+        "Returns Policy §5.1",
+        "Returns Policy §8.3",
+        "UK Consumer Rights Summary §2.2"
+      ],
+      "rerank_top5": [
+        "Returns Policy §2.3",
+        "Returns Policy §1.4",
+        "Returns Policy §5.1",
+        "Returns Policy §8.1",
+        "Returns Policy §7.1"
+      ],
+      "recall_dense": 0.0,
+      "recall_rerank": 0.0,
+      "hit1_dense": false,
+      "hit1_rerank": false
+    },
+    {
+      "task_id": "pol_014",
+      "expected": [
+        "Returns Policy §1.2",
+        "Returns Policy §6.1"
+      ],
+      "dense_top5": [
+        "Returns Policy §1.4",
+        "Supplier Terms §4.2",
+        "UK Consumer Rights Summary §2.2",
+        "Returns Policy §2.3",
+        "Returns Policy §1.2"
+      ],
+      "rerank_top5": [
+        "Returns Policy §1.4",
+        "Returns Policy §8.1",
+        "Returns Policy §2.3",
+        "Returns Policy §5.2",
+        "Returns Policy §6.4"
+      ],
+      "recall_dense": 0.5,
+      "recall_rerank": 0.0,
+      "hit1_dense": false,
+      "hit1_rerank": false
+    },
+    {
+      "task_id": "pol_015",
+      "expected": [
+        "Returns Policy §1.4"
+      ],
+      "dense_top5": [
+        "Returns Policy §1.4",
+        "Returns Policy §1.2",
+        "Returns Policy §2.4",
+        "Returns Policy §2.3",
+        "Returns Policy §4.3"
+      ],
+      "rerank_top5": [
+        "Returns Policy §1.4",
+        "Returns Policy §2.4",
+        "Supplier Terms §4.3",
+        "Returns Policy §6.4",
+        "Returns Policy §7.1"
+      ],
+      "recall_dense": 1.0,
+      "recall_rerank": 1.0,
+      "hit1_dense": true,
+      "hit1_rerank": true
+    }
+  ]
+}

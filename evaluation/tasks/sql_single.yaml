@@ -1,0 +1,215 @@
+# 30 single-step SQL tasks. Gold SQL is executed at scoring time; `mention` lists
+# gold values that must appear in the final answer ("r<row>.<column>" or "all.<column>").
+# Numbers match within 1% or at the precision the answer uses; strings match case-insensitively.
+- id: sql_001
+  question: What was our total gross revenue in November 2011?
+  gold_sql: >-
+    SELECT ROUND(SUM(quantity*unit_price)::numeric,2) AS revenue FROM transactions
+    WHERE NOT is_cancellation AND invoice_date >= '2011-11-01' AND invoice_date < '2011-12-01'
+  mention: [r0.revenue]
+
+- id: sql_002
+  question: How many orders (distinct invoices, excluding cancellations) did we receive in 2010?
+  gold_sql: >-
+    SELECT COUNT(DISTINCT invoice_no) AS orders FROM transactions
+    WHERE NOT is_cancellation AND invoice_date >= '2010-01-01' AND invoice_date < '2011-01-01'
+  mention: [r0.orders]
+
+- id: sql_003
+  question: Which country outside the UK generated the most revenue in 2011, and how much?
+  gold_sql: >-
+    SELECT country, ROUND(SUM(quantity*unit_price)::numeric,2) AS revenue FROM transactions
+    WHERE NOT is_cancellation AND country <> 'United Kingdom'
+      AND invoice_date >= '2011-01-01' AND invoice_date < '2012-01-01'
+    GROUP BY country ORDER BY revenue DESC LIMIT 1
+  mention: [r0.country, r0.revenue]
+
+- id: sql_004
+  question: What were the top 5 products by units sold in November 2011? Give their stock codes.
+  gold_sql: >-
+    SELECT stock_code, SUM(quantity) AS units FROM transactions
+    WHERE NOT is_cancellation AND invoice_date >= '2011-11-01' AND invoice_date < '2011-12-01'
+    GROUP BY stock_code ORDER BY units DESC LIMIT 5
+  mention: [all.stock_code]
+  ordered: true
+
+- id: sql_005
+  question: How many unique customers made a purchase in Q3 2011?
+  gold_sql: >-
+    SELECT COUNT(DISTINCT customer_id) AS customers FROM transactions
+    WHERE NOT is_cancellation AND invoice_date >= '2011-07-01' AND invoice_date < '2011-10-01'
+  mention: [r0.customers]
+
+- id: sql_006
+  question: What was the average order value in 2011 (revenue divided by number of orders)?
+  gold_sql: >-
+    SELECT ROUND((SUM(quantity*unit_price)/COUNT(DISTINCT invoice_no))::numeric,2) AS aov FROM transactions
+    WHERE NOT is_cancellation AND invoice_date >= '2011-01-01' AND invoice_date < '2012-01-01'
+  mention: [r0.aov]
+
+- id: sql_007
+  question: How many cancellation invoices were raised in 2011?
+  gold_sql: >-
+    SELECT COUNT(DISTINCT invoice_no) AS cancellations FROM transactions
+    WHERE is_cancellation AND invoice_date >= '2011-01-01' AND invoice_date < '2012-01-01'
+  mention: [r0.cancellations]
+
+- id: sql_008
+  question: What was the total value of cancelled order lines in 2011?
+  gold_sql: >-
+    SELECT ROUND(-SUM(quantity*unit_price)::numeric,2) AS cancelled_value FROM transactions
+    WHERE is_cancellation AND invoice_date >= '2011-01-01' AND invoice_date < '2012-01-01'
+  mention: [r0.cancelled_value]
+
+- id: sql_009
+  question: Which month of 2011 had the highest gross revenue?
+  gold_sql: >-
+    SELECT to_char(date_trunc('month', invoice_date),'FMMonth') AS month,
+           ROUND(SUM(quantity*unit_price)::numeric,2) AS revenue FROM transactions
+    WHERE NOT is_cancellation AND invoice_date >= '2011-01-01' AND invoice_date < '2012-01-01'
+    GROUP BY date_trunc('month', invoice_date) ORDER BY revenue DESC LIMIT 1
+  mention: [r0.month]
+
+- id: sql_010
+  question: How many products are currently at or below their reorder point?
+  gold_sql: SELECT COUNT(*) AS n FROM stock_levels WHERE on_hand <= reorder_point
+  mention: [r0.n]
+
+- id: sql_011
+  question: What is the current stock on hand for 85123A, and what is its reorder point?
+  gold_sql: SELECT on_hand, reorder_point FROM stock_levels WHERE stock_code = '85123A'
+  mention: [r0.on_hand, r0.reorder_point]
+
+- id: sql_012
+  question: Which supplier supplies the largest number of our products, and how many?
+  gold_sql: >-
+    SELECT supplier_id, COUNT(*) AS n FROM stock_levels GROUP BY supplier_id ORDER BY n DESC LIMIT 1
+  mention: [r0.supplier_id, r0.n]
+
+- id: sql_013
+  question: What is product 22423 and what is its average selling price?
+  gold_sql: SELECT description, avg_unit_price FROM products WHERE stock_code = '22423'
+  mention: [r0.description, r0.avg_unit_price]
+
+- id: sql_014
+  question: Who were our top 3 customers by revenue in 2011? Give customer IDs.
+  gold_sql: >-
+    SELECT customer_id, ROUND(SUM(quantity*unit_price)::numeric,2) AS revenue FROM transactions
+    WHERE NOT is_cancellation AND customer_id IS NOT NULL
+      AND invoice_date >= '2011-01-01' AND invoice_date < '2012-01-01'
+    GROUP BY customer_id ORDER BY revenue DESC LIMIT 3
+  mention: [all.customer_id]
+  ordered: true
+
+- id: sql_015
+  question: How many customers have only ever placed a single order?
+  gold_sql: SELECT COUNT(*) AS n FROM customers WHERE order_count = 1
+  mention: [r0.n]
+
+- id: sql_016
+  question: What was gross revenue from the Christmas category in 2011?
+  gold_sql: >-
+    SELECT ROUND(SUM(t.quantity*t.unit_price)::numeric,2) AS revenue FROM transactions t
+    JOIN products p USING (stock_code)
+    WHERE NOT t.is_cancellation AND p.category = 'Christmas'
+      AND t.invoice_date >= '2011-01-01' AND t.invoice_date < '2012-01-01'
+  mention: [r0.revenue]
+
+- id: sql_017
+  question: Excluding the 'Other' category, which product category sold the most units in 2011?
+  gold_sql: >-
+    SELECT p.category, SUM(t.quantity) AS units FROM transactions t JOIN products p USING (stock_code)
+    WHERE NOT t.is_cancellation AND p.category <> 'Other'
+      AND t.invoice_date >= '2011-01-01' AND t.invoice_date < '2012-01-01'
+    GROUP BY p.category ORDER BY units DESC LIMIT 1
+  mention: [r0.category, r0.units]
+
+- id: sql_018
+  question: How many units of 84879 did we sell in 2011?
+  gold_sql: >-
+    SELECT SUM(quantity) AS units FROM transactions
+    WHERE NOT is_cancellation AND stock_code = '84879'
+      AND invoice_date >= '2011-01-01' AND invoice_date < '2012-01-01'
+  mention: [r0.units]
+
+- id: sql_019
+  question: What is the average selling price across products in the Bags category?
+  gold_sql: SELECT ROUND(AVG(avg_unit_price)::numeric,2) AS avg_price FROM products WHERE category = 'Bags'
+  mention: [r0.avg_price]
+
+- id: sql_020
+  question: How many transaction lines in 2011 have no customer ID?
+  gold_sql: >-
+    SELECT COUNT(*) AS n FROM transactions
+    WHERE customer_id IS NULL AND invoice_date >= '2011-01-01' AND invoice_date < '2012-01-01'
+  mention: [r0.n]
+
+- id: sql_021
+  question: What percentage of 2011 gross revenue came from UK customers?
+  gold_sql: >-
+    SELECT ROUND((100*SUM(CASE WHEN country='United Kingdom' THEN quantity*unit_price ELSE 0 END)
+                  / SUM(quantity*unit_price))::numeric,2) AS uk_pct FROM transactions
+    WHERE NOT is_cancellation AND invoice_date >= '2011-01-01' AND invoice_date < '2012-01-01'
+  mention: [r0.uk_pct]
+
+- id: sql_022
+  question: How many distinct products did we sell in December 2010?
+  gold_sql: >-
+    SELECT COUNT(DISTINCT stock_code) AS n FROM transactions
+    WHERE NOT is_cancellation AND invoice_date >= '2010-12-01' AND invoice_date < '2011-01-01'
+  mention: [r0.n]
+
+- id: sql_023
+  question: Which single day in 2011 had the highest gross revenue, and what was it?
+  gold_sql: >-
+    SELECT invoice_date::date AS day, ROUND(SUM(quantity*unit_price)::numeric,2) AS revenue FROM transactions
+    WHERE NOT is_cancellation AND invoice_date >= '2011-01-01' AND invoice_date < '2012-01-01'
+    GROUP BY 1 ORDER BY revenue DESC LIMIT 1
+  mention: [r0.revenue]
+
+- id: sql_024
+  question: On which day of the week did we receive the most orders in 2011?
+  gold_sql: >-
+    SELECT trim(to_char(invoice_date,'Day')) AS weekday, COUNT(DISTINCT invoice_no) AS orders FROM transactions
+    WHERE NOT is_cancellation AND invoice_date >= '2011-01-01' AND invoice_date < '2012-01-01'
+    GROUP BY 1 ORDER BY orders DESC LIMIT 1
+  mention: [r0.weekday]
+
+- id: sql_025
+  question: How many customers placed their first ever order in 2011?
+  gold_sql: SELECT COUNT(*) AS n FROM customers WHERE first_order >= '2011-01-01' AND first_order < '2012-01-01'
+  mention: [r0.n]
+
+- id: sql_026
+  question: What was total gross revenue in 2010 and in 2011?
+  gold_sql: >-
+    SELECT EXTRACT(YEAR FROM invoice_date)::int AS year, ROUND(SUM(quantity*unit_price)::numeric,2) AS revenue
+    FROM transactions WHERE NOT is_cancellation AND invoice_date >= '2010-01-01' AND invoice_date < '2012-01-01'
+    GROUP BY 1 ORDER BY 1
+  mention: [all.revenue]
+
+- id: sql_027
+  question: Which product earned the most revenue in 2010?
+  gold_sql: >-
+    SELECT t.stock_code, p.description, ROUND(SUM(t.quantity*t.unit_price)::numeric,2) AS revenue
+    FROM transactions t JOIN products p USING (stock_code)
+    WHERE NOT t.is_cancellation AND t.invoice_date >= '2010-01-01' AND t.invoice_date < '2011-01-01'
+    GROUP BY 1, 2 ORDER BY revenue DESC LIMIT 1
+  mention: [r0.stock_code]
+
+- id: sql_028
+  question: Who supplies product 21212 and what is its lead time?
+  gold_sql: SELECT supplier_id, lead_time_days FROM stock_levels WHERE stock_code = '21212'
+  mention: [r0.supplier_id, r0.lead_time_days]
+
+- id: sql_029
+  question: What was the average quantity per order line in 2011?
+  gold_sql: >-
+    SELECT ROUND(AVG(quantity)::numeric,2) AS avg_qty FROM transactions
+    WHERE NOT is_cancellation AND invoice_date >= '2011-01-01' AND invoice_date < '2012-01-01'
+  mention: [r0.avg_qty]
+
+- id: sql_030
+  question: How many of our customers are based in Germany?
+  gold_sql: SELECT COUNT(*) AS n FROM customers WHERE country = 'Germany'
+  mention: [r0.n]

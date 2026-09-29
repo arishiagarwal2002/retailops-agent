@@ -1,0 +1,50 @@
+[project]
+name = "retailops-agent"
+version = "1.0.0"
+description = "Tool-using LLM agent for retail sales, inventory and returns analysis, with guarded SQL, demand forecasting, cited policy retrieval and human-approved actions."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = { text = "MIT" }
+dependencies = [
+    "fastapi>=0.141,<1",
+    "uvicorn[standard]>=0.54",
+    "pydantic>=2.13,<3",
+    "pydantic-settings>=2.15",
+    "sqlalchemy>=2.1,<3",
+    "psycopg[binary]>=3.3",
+    "alembic>=1.20",
+    "pgvector>=0.5",
+    "sqlglot>=30.20",
+    "langgraph>=1.2,<2",
+    "anthropic>=1.8,<2",
+    "openai>=3.19,<4",
+    "lightgbm>=4.7",
+    "numpy>=2.5",
+    "pandas>=3.0",
+    "pyarrow>=25",
+    "fastembed>=0.8,<0.9",
+    "slowapi>=0.1.10",
+    "langfuse>=4.15,<5",
+    "pyyaml>=6.0",
+    "requests>=2.34",
+]
+
+[project.optional-dependencies]
+ui = ["streamlit>=1.64"]
+mcp = ["mcp>=2.2"]
+data = ["openpyxl>=3.1", "matplotlib>=3.11"]
+local-pg = ["pgserver>=0.1.4"]
+dev = ["pytest>=9.1", "httpx>=0.28", "ruff>=0.16", "matplotlib>=3.11"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q -p no:cacheprovider"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+extend-exclude = ["app/db/migrations"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501", "B008", "B905", "E731"]
